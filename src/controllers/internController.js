@@ -6,7 +6,7 @@ const { find } = require("../models/internModel");
 const lowerCase = require("lower-case");
 // ===============================================Regex For Validations================================================================================================
 function validateName($name) {
-    var nameReg = /^[A-Z]+[a-z ]*$/;
+    var nameReg = /^[A-Za-z ]*$/;
     if (!nameReg.test($name)) {
         return false;
     } else {
@@ -24,7 +24,12 @@ function validateMobile($mobile) {
     }
 }
 
+function ConversionToProperName(name) {
 
+    let name2 = name.toLowerCase().split(" ");
+    return name2.map((x) => { return x[0].toUpperCase() + x.substring(1) }).join(" ");
+
+}
 
 
 
@@ -34,11 +39,14 @@ const createIntern = async function (req, res) {
     try {
         if (!req.body) return res.status(400).send({ status: false, msg: "Request Body Cant be Blank" })
         let internData = req.body;
-    
+
 
         if (!internData.name) return res.status(400).send({ status: false, msg: "Name is A Mandatory Field,Please Input Name" });
         if (!validateName(internData.name)) return res.status(400).send({ status: false, msg: "InValid Name" });
-        
+        internData.name = ConversionToProperName(internData.name);
+
+
+
         if (!internData.email) return res.status(400).send({ status: false, msg: "Email is A Mandatory Field,Please Input Email" });
         if (!emailValidator.validate(internData.email)) return res.status(400).send({ status: false, msg: "Invalid Email" });
 
