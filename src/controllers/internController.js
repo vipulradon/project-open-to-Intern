@@ -64,10 +64,10 @@ const createIntern = async function (req, res) {
     obj.name = internData.name;
     obj.email = internData.email;
     obj.mobile = internData.mobile;
-    obj.collegeId = id;
-
+   
 
     let savedIntern = await internModel.create(obj);
+    savedIntern.collegeId = id;
     return res.status(201).send({ status: true, data: savedIntern });
 };
 
