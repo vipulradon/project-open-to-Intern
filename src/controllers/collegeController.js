@@ -1,6 +1,7 @@
 const collegeModel = require("../models/collegeModel");
 const validator = require("upper-case-first");
 const { find } = require("../models/internModel");
+const internModel = require("../models/internModel");
 function validateName($name) {
    
    
@@ -42,8 +43,9 @@ let college = req.query.collegeName;
 if(!college)return res.status(400).send({ status: false, msg: "Please Provide Query Filter" });
 college.toUpperCase();
 req.query.isDeleted = false;
-let interns = await collegeModel.find(req.query).select({_id:1});
-
+let collegeDetails = await collegeModel.findOne(req.query).select({_id:1});
+let collegeid = collegeDetails._id;
+let interns = await internModel.find({collegeId:collegeid})
 
 
 }
