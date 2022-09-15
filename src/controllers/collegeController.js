@@ -1,7 +1,7 @@
 const collegeModel = require("../models/collegeModel");
 const { find } = require("../models/internModel");
 const internModel = require("../models/internModel");
-
+const validator = require("validator");
 
 // =============================================================REGEX FOR NAME VALIDATION============================================================================
 function validateName($name) {
@@ -20,7 +20,7 @@ function validateName($name) {
 
 const createCollege = async function (req, res) {
     try {
-        if (Object.keys(req.body).length==0) return res.status(400).send({ status: false, msg: "Request Body Cant be Blank" })
+        if (Object.keys(req.body).length == 0) return res.status(400).send({ status: false, msg: "Request Body Cant be Blank" })
         let collegeData = req.body;
 
         if (!collegeData.name) return res.status(400).send({ status: false, msg: "CollegeName is A Mandatory Field" });
@@ -36,6 +36,7 @@ const createCollege = async function (req, res) {
 
 
         if (!collegeData.logoLink) return res.status(400).send({ status: false, msg: "Please Provide A College LogoLink,Its A Mandatory Field" });
+        if (!validator.isURL(collegeData.logoLink)) return res.status(400).send({ status: false, msg: "Invalid logoLink" });
 
         let savedCollege = await collegeModel.create(collegeData);
         return res.status(200).send({ status: true, data: savedCollege });
@@ -68,10 +69,10 @@ const getCollegeDetails = async function (req, res) {
         }
 
         let result = {
-            name:collegeDetails.name,
-            fullName:collegeDetails.fullName,
-            logoLink:collegeDetails.logoLink,
-            interns:internlist
+            name: collegeDetails.name,
+            fullName: collegeDetails.fullName,
+            logoLink: collegeDetails.logoLink,
+            interns: internlist
         }
         return res.status(200).send({ status: true, data: result });
     }
