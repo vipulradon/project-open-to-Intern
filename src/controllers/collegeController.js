@@ -63,6 +63,9 @@ const getCollegeDetails = async function (req, res) {
 
 
         let internlist = await internModel.find({ collegeId: collegeid }).select({ name: 1, email: 1, mobile: 1 });
+if(internlist.length==0){
+    internlist = "No Interns Have Applied For this College!!"
+}
 
         let result = collegeDetails._doc;
         result.interns = internlist;
