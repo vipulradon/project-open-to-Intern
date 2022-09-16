@@ -20,29 +20,29 @@ function validateName($name) {
 
 const createCollege = async function (req, res) {
     try {
-        if (Object.keys(req.body).length == 0) return res.status(400).send({ status: false, msg: "Request Body Cant be Blank" })
+        if (Object.keys(req.body).length == 0) return res.status(400).send({ status: false, data: "Request Body Cant be Blank" })
         let collegeData = req.body;
 
-        if (!collegeData.name) return res.status(400).send({ status: false, msg: "CollegeName is A Mandatory Field" });
-        if (!validateName(collegeData.name)) return res.status(400).send({ status: false, msg: "Invalid College Name" });
+        if (!collegeData.name) return res.status(400).send({ status: false, data: "CollegeName is A Mandatory Field" });
+        if (!validateName(collegeData.name)) return res.status(400).send({ status: false, data: "Invalid College Name" });
         collegeData.name.toUpperCase();
         let uniqueCollege = await collegeModel.findOne({ name: collegeData.name });
-        if (uniqueCollege) return res.status(400).send({ status: false, msg: "Please Enter A Different College Name,College Already Exists" });
+        if (uniqueCollege) return res.status(400).send({ status: false, data: "Please Enter A Different College Name,College Already Exists" });
 
 
 
-        if (!collegeData.fullName) return res.status(400).send({ status: false, msg: "College FullName Is A Mandatory Field" });
+        if (!collegeData.fullName) return res.status(400).send({ status: false, data: "College FullName Is A Mandatory Field" });
 
 
 
-        if (!collegeData.logoLink) return res.status(400).send({ status: false, msg: "Please Provide A College LogoLink,Its A Mandatory Field" });
-        if (!validator.isURL(collegeData.logoLink)) return res.status(400).send({ status: false, msg: "Invalid logoLink" });
+        if (!collegeData.logoLink) return res.status(400).send({ status: false, data: "Please Provide A College LogoLink,Its A Mandatory Field" });
+        if (!validator.isURL(collegeData.logoLink)) return res.status(400).send({ status: false, data: "Invalid logoLink" });
 
         let savedCollege = await collegeModel.create(collegeData);
         return res.status(201).send({ status: true, data: savedCollege });
     }
     catch (error) {
-        return res.status(500).send({ status: false, msg: "Internal Server Error" })
+        return res.status(500).send({ status: false, data: "Internal Server Error" })
     }
 }
 
@@ -53,13 +53,13 @@ const createCollege = async function (req, res) {
 const getCollegeDetails = async function (req, res) {
     try {
         let college = req.query.collegeName;
-        if (!college) return res.status(400).send({ status: false, msg: "Please Provide Query Filter" });
-        if (!validateName(college)) return res.status(400).send({ status: false, msg: "Invalid College Name" });
+        if (!college) return res.status(400).send({ status: false, data: "Please Provide Query Filter" });
+        if (!validateName(college)) return res.status(400).send({ status: false, data: "Invalid College Name" });
         let college1 = college.toUpperCase();
 
         req.query.isDeleted = false;
         let collegeDetails = await collegeModel.findOne({ name: college1 }).select({ name: 1, fullName: 1, logoLink: 1 });
-        if (!collegeDetails) return res.status(404).send({ status: false, msg: "College Not Found" });
+        if (!collegeDetails) return res.status(404).send({ status: false, data: "College Not Found" });
         let collegeid = collegeDetails._id;
 
 
@@ -77,7 +77,7 @@ const getCollegeDetails = async function (req, res) {
         return res.status(200).send({ status: true, data: result });
     }
     catch (error) {
-        return res.status(500).send({ status: false, msg: "Internal Server Error" })
+        return res.status(500).send({ status: false, data: "Internal Server Error" })
     }
 };
 
