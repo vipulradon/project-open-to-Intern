@@ -22,12 +22,6 @@ function validateMobile($mobile) {
     }
 }
 
-function ConversionToProperName(name) {
-
-    let name2 = name.toLowerCase().split(" ");
-    return name2.map((x) => { return x[0].toUpperCase() + x.substring(1) }).join(" ");
-
-}
 
 
 
@@ -35,13 +29,12 @@ function ConversionToProperName(name) {
 
 const createIntern = async function (req, res) {
     try {
-        if (!req.body) return res.status(400).send({ status: false, msg: "Request Body Cant be Blank" })
         let internData = req.body;
+        if (Object.keys(internData).length==0) return res.status(400).send({ status: false, msg: "Request Body Cant be Blank" })
 
 
         if (!internData.name) return res.status(400).send({ status: false, msg: "Name is A Mandatory Field,Please Input Name" });
         if (!validateName(internData.name)) return res.status(400).send({ status: false, msg: "InValid Name" });
-        internData.name = ConversionToProperName(internData.name);
 
 
 
@@ -68,7 +61,6 @@ const createIntern = async function (req, res) {
             email : internData.email,
             mobile : internData.mobile,
             collegeId : id
-
         }
        
 
