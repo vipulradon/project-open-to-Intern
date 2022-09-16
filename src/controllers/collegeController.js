@@ -39,7 +39,7 @@ const createCollege = async function (req, res) {
         if (!validator.isURL(collegeData.logoLink)) return res.status(400).send({ status: false, msg: "Invalid logoLink" });
 
         let savedCollege = await collegeModel.create(collegeData);
-        return res.status(200).send({ status: true, data: savedCollege });
+        return res.status(201).send({ status: true, data: savedCollege });
     }
     catch (error) {
         return res.status(500).send({ status: false, msg: "Internal Server Error" })
