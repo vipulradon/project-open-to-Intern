@@ -48,8 +48,13 @@ const createIntern = async function (req, res) {
         if (!internData.email) return res.status(400).send({ status: false, data: "Email is A Mandatory Field,Please Input Email" });
         if (!validator.isEmail(internData.email)) return res.status(400).send({ status: false, data: "Invalid Email" });
 
+<<<<<<< Updated upstream
         if (!internData.mobile) return res.status(400).send({ status: false, data: "Mobile is A Mandatory Field,Please Input Mobile" });
         if (!validateMobile(internData.mobile)) return res.status(400).send({ status: false, data: "InValid Mobile" });
+=======
+        if (!internData.mobile) return res.status(400).send({ status: false, msg: "Mobile is A Mandatory Field,Please Input Mobile number" });
+        if (!validateMobile(internData.mobile)) return res.status(400).send({ status: false, msg: "InValid Mobile" });
+>>>>>>> Stashed changes
 
 
         let uniqueMobileEmail = await internModel.find({ $or: [{ email: internData.email }, { mobile: internData.mobile }] });
