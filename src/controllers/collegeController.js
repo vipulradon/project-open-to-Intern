@@ -38,7 +38,7 @@ const createCollege = async function (req, res) {
         if (!validator.isURL(collegeData.logoLink)) return res.status(400).send({ status: false, msg: "Invalid logoLink" });
 
         let savedCollege = await collegeModel.create(collegeData);
-        return res.status(200).send({ status: true, data: savedCollege });
+        return res.status(201).send({ status: true, data: savedCollege });
     }
     catch (error) {
         return res.status(500).send({ status: false, msg: "Internal Server Error" })
@@ -54,10 +54,9 @@ const getCollegeDetails = async function (req, res) {
         let college = req.query.collegeName;
         if (!college) return res.status(400).send({ status: false, msg: "Please Provide Query Filter" });
         if (!validateName(college)) return res.status(400).send({ status: false, msg: "Invalid College Name" });
-        let college1 = college.toUpperCase();
 
         req.query.isDeleted = false;
-        let collegeDetails = await collegeModel.findOne({ name: college1 }).select({ name: 1, fullName: 1, logoLink: 1 });
+        let collegeDetails = await collegeModel.findOne({ name: college }).select({ name: 1, fullName: 1, logoLink: 1 });
         if (!collegeDetails) return res.status(404).send({ status: false, msg: "College Not Found" });
         let collegeid = collegeDetails._id;
 
