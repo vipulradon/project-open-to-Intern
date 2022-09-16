@@ -25,7 +25,7 @@ const createCollege = async function (req, res) {
 
         if (!collegeData.name) return res.status(400).send({ status: false, data: "CollegeName is A Mandatory Field" });
         if (!validateName(collegeData.name)) return res.status(400).send({ status: false, data: "Invalid College Name" });
-        collegeData.name.toUpperCase();
+        collegeData.name = req.body.name.toUpperCase();
         let uniqueCollege = await collegeModel.findOne({ name: collegeData.name });
         if (uniqueCollege) return res.status(400).send({ status: false, data: "Please Enter A Different College Name,College Already Exists" });
 
